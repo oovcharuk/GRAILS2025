@@ -9,12 +9,13 @@ from torch.optim import AdamW
 from sklearn.model_selection import train_test_split
 from tqdm import tqdm
 
-from PTSDDataset import PTSDDataset
+from utils.PTSDDataset import PTSDDataset
 
 class PTSDDebertaClassifier:
-    def __init__(self, model_name="microsoft/deberta-v3-small", model_path="./", device=None):
+    def __init__(self, model_name="microsoft/deberta-v3-small", model_path="trained_models/", result_path="result_interpretation/", device=None):
         self.model_name = model_name
         self.model_path = model_path
+        self.result_path = result_path
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.tokenizer = DebertaV2Tokenizer.from_pretrained(model_name)
         self.model = DebertaV2ForSequenceClassification.from_pretrained(model_name, num_labels=2)
@@ -98,7 +99,13 @@ class PTSDDebertaClassifier:
 
         attention = outputs.attentions
         tokens = self.tokenizer.convert_ids_to_tokens(inputs['input_ids'][0])
-        head_view(attention, tokens)
+
+        html_head_view = head_view(attention, tokens, html_action='return')
+
+        with open(self.result_path + "head_view.html", "w", encoding="utf-8") as f:
+            f.write(html_head_view.data)
+
+        print(f"Saved to {self.result_path}head_view.html")
 
         logits = outputs.logits
         probs = torch.nn.functional.softmax(logits, dim=-1)
@@ -112,4 +119,9 @@ class PTSDDebertaClassifier:
         explainer(text)
         attributions = explainer.word_attributions
         print(attributions)
-        explainer.visualize()
+        html_output = explainer.visualize()
+
+        with open(self.result_path + "attention_output.html", "w", encoding="utf-8") as f:
+            f.write(html_output.data)
+
+        print(f"Visualization saved to {self.result_path}attention_output.html")
