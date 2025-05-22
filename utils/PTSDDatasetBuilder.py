@@ -3,9 +3,9 @@ import os
 
 class PTSDDatasetBuilder:
     def __init__(self):
-        self.base_path = 'content/human_stress_prediction_data_set.csv'
-        self.additional_path = 'content/aya_ptsd_data_set.csv'
-        self.output_dir = 'content'
+        self.base_path = 'datasets/PTSD/human_stress_prediction_data_set.csv'
+        self.additional_path = 'datasets/PTSD/aya_ptsd_data_set.csv'
+        self.output_dir = 'datasets/PTSD'
         self.existing_output = os.path.join(self.output_dir, 'new_dataset.csv')
         self.combined_output = os.path.join(self.output_dir, 'combined_dataset_all.csv')
         self.combined_dataset = None

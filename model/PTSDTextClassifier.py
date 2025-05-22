@@ -11,8 +11,8 @@ from tqdm import tqdm
 
 from utils.PTSDDataset import PTSDDataset
 
-class PTSDDebertaClassifier:
-    def __init__(self, model_name="microsoft/deberta-v3-small", model_path="trained_models/", result_path="result_interpretation/", device=None):
+class PTSDTextClassifier:
+    def __init__(self, model_name="microsoft/deberta-v3-small", model_path="trained_models/PTSD/", result_path="result_interpretation/", device=None):
         self.model_name = model_name
         self.model_path = model_path
         self.result_path = result_path
