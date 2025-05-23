@@ -125,3 +125,9 @@ class PTSDTextClassifier:
             f.write(html_output.data)
 
         print(f"Visualization saved to {self.result_path}attention_output.html")
+
+        target_probability_percent = round(float(predicted_probs[0][1]) * 100, 2) if predicted_probs.shape[1] > 1 else 0.0
+
+        print(f"Probability of target class: {target_probability_percent}%")
+
+        return target_probability_percent
